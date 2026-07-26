@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ConnectTel AI - Customer Churn Prediction Dashboard</title>
+  <meta name="description" content="Enterprise AI-Powered Telecom Customer Churn Prediction System powered by FastAPI and Random Forest Machine Learning models." />
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN for instant browser execution -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            telecom: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              500: '#0284c7',
+              600: '#0369a1',
+              900: '#0c4a6e',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- React 18 & Babel for standalone browser support -->
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  
+  <!-- Axios CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    @keyframes spinSlow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .animate-spin-slow {
+      animation: spinSlow 8s linear infinite;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900 antialiased selection:bg-blue-500 selection:text-white min-h-screen">
+  <div id="root"></div>
+
+  <!-- Vite module script -->
+  <script type="module" src="/src/main.tsx"></script>
+
+  <!-- Standalone Browser Fallback Script if Vite dev server is not bundling -->
+  <script type="text/babel">
+    // Fallback inline renderer for direct browser file execution
+    if (!window.__vite_plugin_react_preamble_installed__) {
+      const { useState, useEffect } = React;
+
+      // Integrated Standalone ConnectTel AI Frontend
+      function StandaloneApp() {
+        const [activeTab, setActiveTab] = useState('predict');
+        const [formData, setFormData] = useState({
+          gender: 'Female',
+          SeniorCitizen: 0,
+          Partner: 'No',
+          Dependents: 'No',
+          tenure: 3,
+          PhoneService: 'Yes',
+          MultipleLines: 'Yes',
+          InternetService: 'Fiber optic',
+          OnlineSecurity: 'No',
+          OnlineBackup: 'No',
+          DeviceProtection: 'No',
+          TechSupport: 'No',
+          StreamingTV: 'Yes',
+          StreamingMovies: 'Yes',
+          Contract: 'Month-to-month',
+          PaperlessBilling: 'Yes',
+          PaymentMethod: 'Electronic check',
+          MonthlyCharges: 98.85,
+          TotalCharges: 296.55,
+        });
+
+        const [predictionResult, setPredictionResult] = useState(null);
+        const [isLoading, setIsLoading] = useState(false);
+        const [isBackendOnline, setIsBackendOnline] = useState(null);
+        const [useDemoMode, setUseDemoMode] = useState(false);
+        const [hasError, setHasError] = useState(false);
+        const [predictionCount, setPredictionCount] = useState(0);
+
+        const checkBackend = async () => {
+          try {
+            await axios.options('http://127.0.0.1:8000/predict', { timeout: 2000 }).catch(() => axios.get('http://127.0.0.1:8000/', { timeout: 2000 }));
+            setIsBackendOnline(true);
+            setHasError(false);
+          } catch (e) {
+            setIsBackendOnline(false);
+          }
+        };
+
+        useEffect(() => {
+          checkBackend();
+          setTimeout(() => lucide.createIcons(), 200);
+        }, [activeTab, predictionResult]);
+
+        const runMockInference = (data) => {
+          let score = 30;
+          if (data.Contract === 'Month-to-month') score += 32;
+          if (data.Contract === 'Two year') score -= 25;
+          if (data.tenure <= 6) score += 25;
+          if (data.InternetService === 'Fiber optic') score += 12;
+          if (data.PaymentMethod === 'Electronic check') score += 14;
+
+          const churnProb = Math.max(5, Math.min(95, score));
+          const stayProb = 100 - churnProb;
+          const isChurn = churnProb > 50;
+
+          return {
+            prediction: isChurn ? "Customer is likely to Churn" : "Customer is likely to Stay",
+            prediction_code: isChurn ? 1 : 0,
+            probability_stay: stayProb,
+            probability_churn: churnProb,
+            recommendation: isChurn 
+              ? "Customer is at high risk of churn. Recommend offering 15% contract upgrade discount with complimentary Tech Support."
+              : "Customer is stable. Continue regular engagement and recommend cross-selling streaming packages."
+          };
+        };
+
+        const handleSubmit = async (e) => {
+          e.preventDefault();
+          setIsLoading(true);
+          setHasError(false);
+
+          if (useDemoMode) {
+            setTimeout(() => {
+              const res = runMockInference(formData);
+              setPredictionResult(res);
+              setIsLoading(false);
+              setPredictionCount(c => c + 1);
+            }, 800);
+            return;
+          }
+
+          try {
+            const resp = await axios.post('http://127.0.0.1:8000/predict', formData, {
+              headers: { 'Content-Type': 'application/json' },
+              timeout: 6000
+            });
+            setPredictionResult(resp.data);
+            setIsBackendOnline(true);
+            setIsLoading(false);
+            setPredictionCount(c => c + 1);
+          } catch (err) {
+            setIsBackendOnline(false);
+            setIsLoading(false);
+            setHasError(true);
+          }
+        };
+
+        const downloadReport = () => {
+          if (!predictionResult) return;
+          const txt = `CONNECTTEL AI PREDICTION REPORT\nDate: ${new Date().toLocaleString()}\nOutcome: ${predictionResult.prediction}\nStay Prob: ${predictionResult.probability_stay}%\nChurn Prob: ${predictionResult.probability_churn}%\nRecommendation: ${predictionResult.recommendation}`;
+          const blob = new Blob([txt], { type: 'text/plain' });
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = `ConnectTel_Report_${Date.now()}.txt`;
+          a.click();
+        };
+
+        return (
+          <div className="min-h-screen flex flex-col bg-slate-900 text-white font-sans">
+            
+            {/* Header */}
+            <header className="bg-slate-950 border-b border-slate-800 px-6 py-4 flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center text-white font-black">
+                  CT
+                </div>
+                <div>
+                  <h1 className="text-xl font-bold text-white">ConnectTel <span className="text-cyan-400">AI</span></h1>
+                  <p className="text-xs text-slate-400">Customer Churn Prediction Dashboard</p>
+                </div>
+              </div>
+
+              <div className="flex items-center space-x-3 text-xs">
+                <span className={`px-3 py-1 rounded-full font-bold ${isBackendOnline ? 'bg-emerald-500/20 text-emerald-400' : 'bg-rose-500/20 text-rose-400'}`}>
+                  {useDemoMode ? 'Demo AI Engine' : isBackendOnline ? 'FastAPI Online' : 'Backend Offline'}
+                </span>
+                <button 
+                  onClick={() => setUseDemoMode(!useDemoMode)}
+                  className="px-3 py-1 bg-slate-800 hover:bg-slate-700 rounded-lg text-cyan-300 font-semibold"
+                >
+                  {useDemoMode ? 'Use Live API' : 'Enable Demo Mode'}
+                </button>
+              </div>
+            </header>
+
+            {/* Content Body */}
+            <div className="flex-1 max-w-7xl w-full mx-auto p-6 space-y-8">
+              
+              {/* Title Card */}
+              <div className="bg-slate-800/80 rounded-2xl p-6 border border-slate-700">
+                <h2 className="text-2xl sm:text-3xl font-extrabold text-white">
+                  AI-Powered Customer Churn Prediction
+                </h2>
+                <p className="text-slate-300 text-sm mt-1">
+                  Predict whether a telecom customer is likely to churn based on demographics, subscribed services, billing options, and contract tenure.
+                </p>
+              </div>
+
+              {/* Offline Warning Banner */}
+              {hasError && (
+                <div className="bg-rose-950/80 border-2 border-rose-600 p-6 rounded-2xl space-y-3">
+                  <h3 className="text-lg font-bold text-rose-200">Unable to connect to AI Prediction Server.</h3>
+                  <p className="text-xs text-slate-300">Please verify FastAPI server is listening at http://127.0.0.1:8000/predict</p>
+                  <div className="flex gap-3">
+                    <button onClick={checkBackend} className="px-4 py-2 bg-rose-600 hover:bg-rose-700 rounded-xl text-xs font-bold">
+                      Retry Connection
+                    </button>
+                    <button 
+                      onClick={() => {
+                        setUseDemoMode(true);
+                        setHasError(false);
+                        setPredictionResult(runMockInference(formData));
+                      }} 
+                      className="px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded-xl text-xs font-bold text-cyan-300"
+                    >
+                      Enable Demo Engine
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Prediction Form */}
+              <form onSubmit={handleSubmit} className="bg-slate-800/90 p-6 rounded-2xl border border-slate-700 space-y-6">
+                <h3 className="text-lg font-bold text-cyan-400 border-b border-slate-700 pb-2">Customer Parameters</h3>
+                
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  
+                  {/* Demographics */}
+                  <div className="space-y-4">
+                    <h4 className="text-xs font-bold uppercase text-slate-400">Demographics</h4>
+                    <div>
+                      <label className="block text-xs mb-1">Gender</label>
+                      <select 
+                        value={formData.gender} 
+                        onChange={e => setFormData({...formData, gender: e.target.value})}
+                        className="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs"
+                      >
+                        <option value="Female">Female</option>
+                        <option value="Male">Male</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs mb-1">Senior Citizen</label>
+                      <select 
+                        value={formData.SeniorCitizen} 
+                        onChange={e => setFormData({...formData, SeniorCitizen: parseInt(e.target.value)})}
+                        className="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs"
+                      >
+                        <option value={0}>No (0)</option>
+                        <option value={1}>Yes (1)</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs mb-1">Partner</label>
+                      <select 
+                        value={formData.Partner} 
+                        onChange={e => setFormData({...formData, Partner: e.target.value})}
+                        className="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs"
+                      >
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs mb-1">Dependents</label>
+                      <select 
+                        value={formData.Dependents} 
+                        onChange={e => setFormData({...formData, Dependents: e.target.value})}
+                        className="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs"
+                      >
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Services */}
+                  <div className="space-y-4">
+                    <h4 className="text-xs font-bold uppercase text-slate-400">Services</h4>
+                    <div>
+                      <label className="block text-xs mb-1">Internet Service</label>
+                      <select 
+                        value={formData.InternetService} 
+                        onChange={e => setFormData({...formData, InternetService: e.target.value})}
+                        className="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs"
+                      >
+                        <option value="Fiber optic">Fiber optic</option>
+                        <option value="DSL">DSL</option>
+                        <option value="No">No</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs mb-1">Phone Service</label>
+                      <select 
+                        value={formData.PhoneService} 
+                        onChange={e => setFormData({...formData, PhoneService: e.target.value})}
+                        className="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs"
+                      >
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs mb-1">Tech Support</label>
+                      <select 
+                        value={formData.TechSupport} 
+                        onChange={e => setFormData({...formData, TechSupport: e.target.value})}
+                        className="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs"
+                      >
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                        <option value="No internet service">No internet service</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs mb-1">Online Security</label>
+                      <select 
+                        value={formData.OnlineSecurity} 
+                        onChange={e => setFormData({...formData, OnlineSecurity: e.target.value})}
+                        className="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs"
+                      >
+                        <option value="Yes">Yes</option>
+                        <option value="No">No</option>
+                        <option value="No internet service">No internet service</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  {/* Contract & Billing */}
+                  <div className="space-y-4">
+                    <h4 className="text-xs font-bold uppercase text-slate-400">Contract & Financials</h4>
+                    <div>
+                      <label className="block text-xs mb-1">Tenure ({formData.tenure} Months)</label>
+                      <input 
+                        type="range" min="0" max="72" 
+                        value={formData.tenure} 
+                        onChange={e => setFormData({...formData, tenure: parseInt(e.target.value) || 0})}
+                        className="w-full accent-blue-500"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-xs mb-1">Contract</label>
+                      <select 
+                        value={formData.Contract} 
+                        onChange={e => setFormData({...formData, Contract: e.target.value})}
+                        className="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs"
+                      >
+                        <option value="Month-to-month">Month-to-month</option>
+                        <option value="One year">One year</option>
+                        <option value="Two year">Two year</option>
+                      </select>
+                    </div>
+
+                    <div>
+                      <label className="block text-xs mb-1">Payment Method</label>
+                      <select 
+                        value={formData.PaymentMethod} 
+                        onChange={e => setFormData({...formData, PaymentMethod: e.target.value})}
+                        className="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs"
+                      >
+                        <option value="Electronic check">Electronic check</option>
+                        <option value="Mailed check">Mailed check</option>
+                        <option value="Bank transfer (automatic)">Bank transfer (automatic)</option>
+                        <option value="Credit card (automatic)">Credit card (automatic)</option>
+                      </select>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2">
+                      <div>
+                        <label className="block text-[10px] mb-1">Monthly ($)</label>
+                        <input 
+                          type="number" 
+                          value={formData.MonthlyCharges} 
+                          onChange={e => setFormData({...formData, MonthlyCharges: parseFloat(e.target.value) || 0})}
+                          className="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs"
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-[10px] mb-1">Total ($)</label>
+                        <input 
+                          type="number" 
+                          value={formData.TotalCharges} 
+                          onChange={e => setFormData({...formData, TotalCharges: parseFloat(e.target.value) || 0})}
+                          className="w-full bg-slate-900 border border-slate-700 rounded-xl p-2 text-xs"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+                <div className="pt-4 flex justify-center">
+                  <button 
+                    type="submit" 
+                    disabled={isLoading}
+                    className="w-full sm:w-auto px-10 py-3.5 bg-blue-600 hover:bg-blue-500 text-white font-extrabold rounded-2xl shadow-lg transition"
+                  >
+                    {isLoading ? "Analyzing customer behaviour..." : "Predict Customer Churn"}
+                  </button>
+                </div>
+              </form>
+
+              {/* Results Dashboard */}
+              {predictionResult && !hasError && (
+                <div className="space-y-6 animate-fade-in">
+                  
+                  {/* Large Status Card */}
+                  <div className={`p-6 sm:p-8 rounded-3xl border-2 shadow-2xl flex flex-col sm:flex-row items-center justify-between gap-4 ${
+                    predictionResult.prediction_code === 0 
+                      ? 'bg-emerald-950/90 border-emerald-500 text-emerald-100'
+                      : 'bg-rose-950/90 border-rose-500 text-rose-100'
+                  }`}>
+                    <div>
+                      <span className="text-xs font-bold uppercase tracking-wider opacity-80">AI Prediction Result</span>
+                      <h2 className="text-3xl font-black">{predictionResult.prediction}</h2>
+                    </div>
+                    <button 
+                      onClick={downloadReport}
+                      className="px-5 py-3 bg-white text-slate-900 hover:bg-slate-100 font-extrabold rounded-xl text-xs shadow-md"
+                    >
+                      Download Prediction Report
+                    </button>
+                  </div>
+
+                  {/* 3 KPI Cards */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700">
+                      <span className="text-xs font-bold text-slate-400 uppercase">Stay Probability</span>
+                      <div className="text-3xl font-black text-emerald-400 mt-2">{predictionResult.probability_stay}%</div>
+                    </div>
+
+                    <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700">
+                      <span className="text-xs font-bold text-slate-400 uppercase">Churn Probability</span>
+                      <div className="text-3xl font-black text-rose-400 mt-2">{predictionResult.probability_churn}%</div>
+                    </div>
+
+                    <div className="bg-slate-800 p-6 rounded-2xl border border-slate-700">
+                      <span className="text-xs font-bold text-slate-400 uppercase">Risk Level</span>
+                      <div className="text-2xl font-black mt-2">
+                        {predictionResult.probability_churn > 70 ? (
+                          <span className="text-rose-500">HIGH RISK</span>
+                        ) : predictionResult.probability_churn > 30 ? (
+                          <span className="text-amber-500">MEDIUM RISK</span>
+                        ) : (
+                          <span className="text-emerald-500">LOW RISK</span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Recommendation Card */}
+                  <div className="bg-slate-800 p-6 rounded-2xl border border-blue-500/40 space-y-2">
+                    <h4 className="text-xs font-bold uppercase text-cyan-400">AI Strategic Recommendation</h4>
+                    <p className="text-sm font-semibold text-slate-200">"{predictionResult.recommendation}"</p>
+                  </div>
+
+                </div>
+              )}
+
+            </div>
+
+            {/* Footer */}
+            <footer className="bg-slate-950 border-t border-slate-800 p-6 text-center text-xs text-slate-500">
+              ConnectTel AI • Powered by FastAPI • Machine Learning • Random Forest • Professional Dashboard v1.0
+            </footer>
+
+          </div>
+        );
+      }
+
+      ReactDOM.createRoot(document.getElementById('root')).render(<StandaloneApp />);
+    }
+  </script>
+</body>
+</html>
