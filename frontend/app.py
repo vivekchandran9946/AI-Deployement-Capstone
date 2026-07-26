@@ -158,11 +158,10 @@ if st.button("🔍 Predict Customer Churn", use_container_width=True):
         with st.spinner("Analyzing customer data..."):
 
             response = requests.post(
-                "http://127.0.0.1:8000/predict",
+                "https://customer-churn-api.onrender.com/predict",
                 json=customer,
                 timeout=10
             )
-
         if response.status_code == 200:
 
             result = response.json()
@@ -265,5 +264,5 @@ if st.button("🔍 Predict Customer Churn", use_container_width=True):
 st.markdown("---")
 
 st.caption(
-    "🚀 Powered by FastAPI • Streamlit • Scikit-Learn • Plotly | ConnectTel AI Dashboard"
+    " ConnectTel AI Dashboard"
 )
