@@ -22,8 +22,12 @@ app.add_middleware(
 
 @app.get("/")
 def home():
-    return {"message": "Customer Churn Prediction API is running!"}
-
+    return {
+        "message": "Customer Churn Prediction API is live ",
+        "project": "AI-Based Telecom Customer Churn Prediction",
+        "status": "Running",
+        "version": "1.0"
+    }
 @app.get("/health")
 def health():
     return {"status": "healthy"}
