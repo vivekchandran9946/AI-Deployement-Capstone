@@ -1,23 +1,137 @@
 @import "tailwindcss";
 
-@layer base {
-  body {
-    @apply bg-slate-50 text-slate-900 antialiased selection:bg-blue-500 selection:text-white;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  }
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ==========================================================================
+   THEME 1: CYBER GREEN & CYAN (Default Dark Cyber Engine)
+   ========================================================================== */
+html.theme-cyber,
+body.theme-cyber {
+  background-color: #06090e !important;
+  color: #f8fafc !important;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background-image:
+    radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.16) 0%, transparent 55%),
+    radial-gradient(circle at 85% 25%, rgba(0, 229, 255, 0.12) 0%, transparent 45%),
+    linear-gradient(to bottom, rgba(6, 9, 14, 0.95), rgba(6, 9, 14, 1));
+  background-attachment: fixed;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.theme-cyber select,
+.theme-cyber input,
+.theme-cyber textarea {
+  color-scheme: dark;
+}
+
+/* ==========================================================================
+   THEME 2: DARK BLUE & BLACK (Deep Navy & Neon Blue)
+   ========================================================================== */
+html.theme-dark-blue,
+body.theme-dark-blue {
+  background-color: #050a15 !important;
+  color: #f8fafc !important;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background-image:
+    radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.22) 0%, transparent 60%),
+    radial-gradient(circle at 85% 25%, rgba(6, 182, 212, 0.15) 0%, transparent 45%),
+    linear-gradient(to bottom, rgba(5, 10, 21, 0.95), rgba(5, 10, 21, 1));
+  background-attachment: fixed;
+  min-height: 100vh;
+  width: 100%;
+}
+
+.theme-dark-blue select,
+.theme-dark-blue input,
+.theme-dark-blue textarea {
+  color-scheme: dark;
+}
+
+/* Custom Background Grid Pattern */
+.bg-grid-pattern {
+  background-size: 36px 36px;
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+}
+
+/* Glow Utilities */
+.glow-green {
+  box-shadow: 0 0 30px -4px rgba(16, 185, 129, 0.5);
+}
+
+.glow-blue {
+  box-shadow: 0 0 30px -4px rgba(59, 130, 246, 0.55);
+}
+
+.glow-cyan {
+  box-shadow: 0 0 30px -4px rgba(0, 229, 255, 0.45);
+}
+
+.text-glow-green {
+  text-shadow: 0 0 16px rgba(16, 185, 129, 0.85);
+}
+
+.text-glow-blue {
+  text-shadow: 0 0 16px rgba(59, 130, 246, 0.85);
+}
+
+.text-glow-cyan {
+  text-shadow: 0 0 16px rgba(0, 229, 255, 0.85);
+}
+
+.text-glow-white {
+  text-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
+}
+
+/* Theme Adaptive Glass / Surface Card Style */
+.app-card {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Cyber Theme Cards */
+.theme-cyber .app-card {
+  background: rgba(11, 17, 26, 0.85) !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  box-shadow: 0 12px 40px -10px rgba(0, 0, 0, 0.9);
+  color: #f8fafc !important;
+}
+
+.theme-cyber .app-card:hover {
+  border-color: rgba(16, 185, 129, 0.5) !important;
+  box-shadow: 0 14px 45px -6px rgba(16, 185, 129, 0.22);
+}
+
+/* Dark Blue Theme Cards */
+.theme-dark-blue .app-card {
+  background: rgba(10, 18, 36, 0.88) !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(59, 130, 246, 0.2) !important;
+  box-shadow: 0 12px 40px -10px rgba(0, 0, 0, 0.9);
+  color: #f8fafc !important;
+}
+
+.theme-dark-blue .app-card:hover {
+  border-color: rgba(59, 130, 246, 0.6) !important;
+  box-shadow: 0 14px 45px -6px rgba(59, 130, 246, 0.3);
 }
 
 @keyframes spin-slow {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
 }
 
 .animate-spin-slow {
-  animation: spin-slow 8s linear infinite;
+  animation: spin-slow 10s linear infinite;
 }
 
 @keyframes fade-in {
@@ -25,6 +139,7 @@
     opacity: 0;
     transform: translateY(12px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);

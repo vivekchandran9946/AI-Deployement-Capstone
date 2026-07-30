@@ -46,15 +46,15 @@ export const AboutModel: React.FC = () => {
         {metrics.map((m) => (
           <div
             key={m.label}
-            className="bg-white rounded-3xl p-6 border border-slate-200/80 shadow-lg shadow-slate-200/50 space-y-2"
+            className="app-card rounded-3xl p-6 shadow-md space-y-2"
           >
-            <span className="text-xs font-extrabold uppercase tracking-wider text-slate-400">
+            <span className="text-xs font-black uppercase tracking-wider text-slate-300 theme-light:text-slate-700">
               {m.label}
             </span>
-            <div className="text-3xl font-black text-slate-900">
+            <div className="text-3xl font-black text-white theme-light:text-slate-900">
               {m.value}
             </div>
-            <p className="text-xs text-slate-500 font-medium">
+            <p className="text-xs text-slate-400 theme-light:text-slate-600 font-bold">
               {m.desc}
             </p>
           </div>
@@ -65,16 +65,16 @@ export const AboutModel: React.FC = () => {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         
         {/* Feature Importance Chart */}
-        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-xl space-y-6">
-          <div className="flex items-center space-x-3 pb-4 border-b border-slate-100">
-            <div className="p-2.5 rounded-2xl bg-blue-50 text-blue-600 border border-blue-100">
+        <div className="app-card rounded-3xl p-6 sm:p-8 shadow-xl space-y-6">
+          <div className="flex items-center space-x-3 pb-4 border-b border-white/10 theme-light:border-slate-200">
+            <div className="p-2.5 rounded-2xl bg-emerald-500/10 theme-dark-blue:bg-blue-500/10 theme-light:bg-blue-50 text-emerald-400 theme-dark-blue:text-cyan-400 theme-light:text-blue-600 border border-emerald-500/30 theme-dark-blue:border-blue-500/30 theme-light:border-blue-200">
               <BarChart3 className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="font-extrabold text-lg text-slate-900">
+              <h3 className="font-black text-lg text-white theme-light:text-slate-900">
                 Top Model Feature Importances
               </h3>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-400 theme-light:text-slate-600 font-bold">
                 Key variables influencing churn probability
               </p>
             </div>
@@ -83,11 +83,11 @@ export const AboutModel: React.FC = () => {
           <div className="space-y-4">
             {featureImportances.map((item) => (
               <div key={item.name} className="space-y-1.5">
-                <div className="flex justify-between text-xs font-bold text-slate-800">
+                <div className="flex justify-between text-xs font-black text-slate-200 theme-light:text-slate-800">
                   <span>{item.name}</span>
-                  <span className="text-blue-600">{item.weight}%</span>
+                  <span className="text-emerald-400 theme-dark-blue:text-cyan-400 theme-light:text-blue-700">{item.weight}%</span>
                 </div>
-                <div className="w-full bg-slate-100 h-2.5 rounded-full overflow-hidden">
+                <div className="w-full bg-slate-800 theme-light:bg-slate-200 h-2.5 rounded-full overflow-hidden">
                   <div
                     className={`${item.color} h-full rounded-full transition-all duration-1000`}
                     style={{ width: `${item.weight * 3}%` }}
@@ -99,55 +99,57 @@ export const AboutModel: React.FC = () => {
         </div>
 
         {/* Pipeline & Technical Specifications */}
-        <div className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-xl space-y-6">
-          <div className="flex items-center space-x-3 pb-4 border-b border-slate-100">
-            <div className="p-2.5 rounded-2xl bg-indigo-50 text-indigo-600 border border-indigo-100">
+        <div className="app-card rounded-3xl p-6 sm:p-8 shadow-xl space-y-6">
+          <div className="flex items-center space-x-3 pb-4 border-b border-white/10 theme-light:border-slate-200">
+            <div className="p-2.5 rounded-2xl bg-teal-500/10 theme-dark-blue:bg-indigo-500/10 theme-light:bg-indigo-50 text-teal-400 theme-dark-blue:text-indigo-400 theme-light:text-indigo-600 border border-teal-500/30 theme-dark-blue:border-indigo-500/30 theme-light:border-indigo-200">
               <Layers className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="font-extrabold text-lg text-slate-900">
+              <h3 className="font-black text-lg text-white theme-light:text-slate-900">
                 Prediction Pipeline Architecture
               </h3>
-              <p className="text-xs text-slate-500">
+              <p className="text-xs text-slate-400 theme-light:text-slate-600 font-bold">
                 End-to-end data transformation & inference flow
               </p>
             </div>
           </div>
 
           <div className="space-y-4 text-xs">
-            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
-              <div className="flex items-center gap-2 font-bold text-slate-900">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+            <div className="p-4 rounded-2xl bg-slate-900/80 theme-light:bg-slate-50 border border-white/10 theme-light:border-slate-200 space-y-2">
+              <div className="flex items-center gap-2 font-black text-white theme-light:text-slate-900">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 theme-dark-blue:text-cyan-400 theme-light:text-emerald-600" />
                 1. Feature Encoding & Normalization
               </div>
-              <p className="text-slate-600">
+              <p className="text-slate-300 theme-light:text-slate-700 font-semibold leading-relaxed">
                 Categorical features (Gender, InternetService, Contract) are One-Hot Encoded. Tenure and MonthlyCharges are StandardScaled before inference.
               </p>
             </div>
 
-            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
-              <div className="flex items-center gap-2 font-bold text-slate-900">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+            <div className="p-4 rounded-2xl bg-slate-900/80 theme-light:bg-slate-50 border border-white/10 theme-light:border-slate-200 space-y-2">
+              <div className="flex items-center gap-2 font-black text-white theme-light:text-slate-900">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 theme-dark-blue:text-cyan-400 theme-light:text-emerald-600" />
                 2. Random Forest Decision Ensemble
               </div>
-              <p className="text-slate-600">
+              <p className="text-slate-300 theme-light:text-slate-700 font-semibold leading-relaxed">
                 100 decision trees vote on the final binary class while outputting class probabilities (`probability_stay`, `probability_churn`).
               </p>
             </div>
 
-            <div className="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
-              <div className="flex items-center gap-2 font-bold text-slate-900">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+            <div className="p-4 rounded-2xl bg-slate-900/80 theme-light:bg-slate-50 border border-white/10 theme-light:border-slate-200 space-y-2">
+              <div className="flex items-center gap-2 font-black text-white theme-light:text-slate-900">
+                <CheckCircle2 className="w-4 h-4 text-emerald-400 theme-dark-blue:text-cyan-400 theme-light:text-emerald-600" />
                 3. FastAPI REST Endpoint
               </div>
-              <p className="text-slate-600">
-                Exposed via asynchronous Python FastAPI server at <code className="bg-slate-200 px-1.5 py-0.5 rounded text-blue-700 font-mono font-bold">POST http://127.0.0.1:8000/predict</code> with JSON response contract.
+              <p className="text-slate-300 theme-light:text-slate-700 font-semibold leading-relaxed">
+                Exposed via asynchronous Python FastAPI server at <code className="bg-emerald-500/10 theme-dark-blue:bg-blue-500/10 theme-light:bg-blue-100 px-2 py-0.5 rounded text-emerald-300 theme-dark-blue:text-cyan-300 theme-light:text-blue-800 font-mono font-bold border border-emerald-500/30 theme-dark-blue:border-blue-500/30 theme-light:border-blue-200">POST http://127.0.0.1:8000/predict</code> with JSON response contract.
               </p>
             </div>
           </div>
         </div>
 
       </div>
+
+
 
     </div>
   );

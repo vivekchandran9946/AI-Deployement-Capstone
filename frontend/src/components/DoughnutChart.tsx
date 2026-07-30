@@ -17,8 +17,8 @@ export const DoughnutChart: React.FC<DoughnutChartProps> = ({
   const churnLength = (probabilityChurn / 100) * circumference;
 
   return (
-    <div className="flex flex-col items-center justify-center p-6 bg-white rounded-3xl border border-slate-200/80 shadow-lg shadow-slate-200/50">
-      <h4 className="text-xs font-extrabold uppercase tracking-wider text-slate-500 mb-3">
+    <div className="flex flex-col items-center justify-center p-6 bg-white dark:bg-slate-900 rounded-3xl border border-slate-200/90 dark:border-slate-800 shadow-md">
+      <h4 className="text-xs font-black uppercase tracking-wider text-slate-700 dark:text-slate-300 mb-3">
         Stay vs Churn Distribution
       </h4>
       
@@ -29,7 +29,7 @@ export const DoughnutChart: React.FC<DoughnutChartProps> = ({
             cx="80"
             cy="80"
             r={radius}
-            className="text-slate-100 stroke-current"
+            className="text-slate-200 dark:text-slate-700 stroke-current"
             strokeWidth="18"
             fill="transparent"
           />
@@ -63,17 +63,17 @@ export const DoughnutChart: React.FC<DoughnutChartProps> = ({
 
         {/* Center Content */}
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
-          <span className="text-3xl font-black text-slate-900">
+          <span className="text-3xl font-black text-slate-900 dark:text-white">
             {probabilityStay}%
           </span>
-          <span className="text-[10px] font-bold text-emerald-600 uppercase tracking-wide">
+          <span className="text-[10px] font-black text-emerald-600 dark:text-emerald-400 uppercase tracking-wide">
             Retention Rate
           </span>
         </div>
       </div>
 
       {/* Legend */}
-      <div className="flex items-center justify-center gap-5 mt-4 pt-3 border-t border-slate-100 w-full text-xs font-bold text-slate-700">
+      <div className="flex items-center justify-center gap-5 mt-4 pt-3 border-t border-slate-200 dark:border-slate-800 w-full text-xs font-black text-slate-800 dark:text-slate-200">
         <div className="flex items-center gap-1.5">
           <span className="w-3 h-3 rounded-full bg-emerald-500"></span>
           Stay ({probabilityStay}%)
@@ -86,3 +86,4 @@ export const DoughnutChart: React.FC<DoughnutChartProps> = ({
     </div>
   );
 };
+
