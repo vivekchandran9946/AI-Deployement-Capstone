@@ -1,5 +1,5 @@
 import React from 'react';
-import { LayoutDashboard, UserCheck, Cpu, ShieldCheck, Database, FileText, ChevronRight } from 'lucide-react';
+import { LayoutDashboard, UserCheck, Cpu, ShieldCheck, Database, ChevronRight } from 'lucide-react';
 
 export type NavTab = 'dashboard' | 'predict' | 'about';
 
@@ -13,33 +13,33 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, onTabChange, predic
   const navItems = [
     {
       id: 'dashboard' as NavTab,
-      label: 'Dashboard',
+      label: 'Executive Overview',
       icon: LayoutDashboard,
-      desc: 'Overview & Quick Stats',
+      desc: 'System Analytics & Trends',
     },
     {
       id: 'predict' as NavTab,
-      label: 'Predict Customer',
+      label: 'Predict Customer Churn',
       icon: UserCheck,
-      desc: 'Inference Form & Results',
-      badge: predictionCount > 0 ? `${predictionCount} Done` : undefined,
+      desc: '19-Feature Inference Workspace',
+      badge: predictionCount > 0 ? `${predictionCount} Evaluated` : undefined,
     },
     {
       id: 'about' as NavTab,
-      label: 'About Model',
+      label: 'Model Intelligence',
       icon: Cpu,
-      desc: 'Random Forest Metrics',
+      desc: 'Random Forest Architecture',
     },
   ];
 
   return (
-    <aside className="w-full lg:w-72 bg-white dark:bg-slate-900 border-r border-slate-200 dark:border-slate-800 p-4 sm:p-6 flex flex-col justify-between shadow-sm shrink-0">
+    <aside className="w-full lg:w-72 bg-white dark:bg-slate-900 border-r border-slate-200/80 dark:border-slate-800 p-5 sm:p-6 flex flex-col justify-between shadow-xs shrink-0 transition-colors duration-300">
       <div className="space-y-6">
         <div>
-          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider px-3 mb-3">
-            Main Menu
+          <p className="text-[11px] font-extrabold text-slate-400 dark:text-slate-500 uppercase tracking-wider px-3 mb-3">
+            Navigation Workspace
           </p>
-          <nav className="space-y-1.5">
+          <nav className="space-y-2">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = activeTab === item.id;
@@ -47,27 +47,29 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, onTabChange, predic
                 <button
                   key={item.id}
                   onClick={() => onTabChange(item.id)}
-                  className={`w-full flex items-center justify-between p-3 rounded-xl font-medium text-sm transition-all duration-200 cursor-pointer ${
+                  className={`w-full flex items-center justify-between p-3.5 rounded-2xl font-medium text-sm transition-all duration-200 cursor-pointer ${
                     isActive
-                      ? 'bg-blue-600 text-white shadow-lg shadow-blue-600/30'
-                      : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800/60 hover:text-blue-600'
+                      ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/25 ring-2 ring-blue-500/20'
+                      : 'text-slate-600 dark:text-slate-300 hover:bg-slate-100/80 dark:hover:bg-slate-800 hover:text-blue-600 dark:hover:text-cyan-400'
                   }`}
                 >
                   <div className="flex items-center space-x-3">
-                    <Icon className={`w-5 h-5 ${isActive ? 'text-white' : 'text-slate-400'}`} />
+                    <div className={`p-2 rounded-xl ${isActive ? 'bg-white/20 text-white' : 'bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400'}`}>
+                      <Icon className="w-4 h-4" />
+                    </div>
                     <div className="text-left">
-                      <div className="font-semibold leading-tight">{item.label}</div>
-                      <div className={`text-[11px] font-normal ${isActive ? 'text-blue-100' : 'text-slate-400'}`}>
+                      <div className="font-bold leading-tight text-xs sm:text-sm">{item.label}</div>
+                      <div className={`text-[11px] font-normal ${isActive ? 'text-blue-100' : 'text-slate-400 dark:text-slate-500'}`}>
                         {item.desc}
                       </div>
                     </div>
                   </div>
                   {item.badge && (
-                    <span className="px-2 py-0.5 text-xs font-bold rounded-full bg-cyan-500/20 text-cyan-400 border border-cyan-500/30">
+                    <span className="px-2 py-0.5 text-[10px] font-black rounded-full bg-blue-100 dark:bg-blue-950 text-blue-800 dark:text-cyan-400 border border-blue-200 dark:border-blue-800">
                       {item.badge}
                     </span>
                   )}
-                  {isActive && <ChevronRight className="w-4 h-4 text-blue-200" />}
+                  {isActive && <ChevronRight className="w-4 h-4 text-blue-100" />}
                 </button>
               );
             })}
@@ -75,37 +77,37 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeTab, onTabChange, predic
         </div>
 
         {/* Model Spec Box */}
-        <div className="p-4 rounded-2xl bg-gradient-to-br from-slate-900 to-blue-950 text-white border border-slate-800 shadow-md">
-          <div className="flex items-center justify-between mb-2">
-            <span className="flex items-center gap-1.5 text-xs font-bold text-cyan-400">
+        <div className="p-5 rounded-3xl bg-gradient-to-br from-slate-900 via-slate-800 to-blue-950 text-white border border-slate-700/80 shadow-xl space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="flex items-center gap-1.5 text-xs font-black text-cyan-400">
               <ShieldCheck className="w-4 h-4" /> Random Forest
             </span>
-            <span className="px-2 py-0.5 rounded text-[10px] font-extrabold bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
-              84.7% Acc
+            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-black bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+              84.7% Accuracy
             </span>
           </div>
-          <p className="text-xs text-slate-300 leading-relaxed mb-3">
-            Trained on Telco retention dataset with 19 customer features.
+          <p className="text-xs text-slate-300 leading-relaxed font-normal">
+            Calibrated machine learning decision ensemble trained on 7,043 Telco records.
           </p>
-          <div className="grid grid-cols-2 gap-2 text-[11px] text-slate-400 border-t border-slate-800/80 pt-2">
+          <div className="grid grid-cols-2 gap-2 text-[11px] text-slate-300 border-t border-slate-700/80 pt-3">
             <div>
-              <span className="block text-slate-500">Trees</span>
-              <span className="font-semibold text-slate-200">100 Estimators</span>
+              <span className="block text-slate-400 text-[10px]">Decision Trees</span>
+              <span className="font-bold text-white">100 Trees</span>
             </div>
             <div>
-              <span className="block text-slate-500">Latency</span>
-              <span className="font-semibold text-slate-200">~12 ms</span>
+              <span className="block text-slate-400 text-[10px]">Inference Time</span>
+              <span className="font-bold text-white">~12 ms</span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Quick Docs Link */}
-      <div className="pt-4 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500 flex items-center justify-between">
-        <span className="flex items-center gap-1.5">
-          <Database className="w-3.5 h-3.5 text-slate-400" /> REST API Ready
+      {/* API Link */}
+      <div className="pt-4 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400 flex items-center justify-between">
+        <span className="flex items-center gap-1.5 font-medium">
+          <Database className="w-3.5 h-3.5 text-blue-600 dark:text-cyan-400" /> REST API Endpoint
         </span>
-        <span className="text-[11px] font-mono text-blue-500 bg-blue-50 dark:bg-blue-950/40 px-2 py-0.5 rounded">
+        <span className="text-[11px] font-mono font-bold text-blue-700 dark:text-cyan-300 bg-blue-50 dark:bg-blue-950/60 px-2.5 py-1 rounded-lg border border-blue-200 dark:border-blue-800">
           /predict
         </span>
       </div>

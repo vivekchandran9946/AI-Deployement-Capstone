@@ -50,3 +50,5 @@ export interface RiskInfo {
   badgeBg: string;
   textColor: string;
 }
+
+export type ThemeMode = 'light' | 'dark';
