@@ -36,7 +36,7 @@ export const App: React.FC = () => {
   const [predictionCount, setPredictionCount] = useState<number>(0);
   const [themeMode, setThemeMode] = useState<ThemeMode>('cyber');
 
-  const BACKEND_BASE_URL = import.meta.env.VITE_BACKEND_URL ?? 'http://127.0.0.1:8000';
+  const BACKEND_BASE_URL = import.meta.env.VITE_BACKEND_URL ?? 'https://customer-churn-api.onrender.com';
   const BACKEND_URL = BACKEND_BASE_URL.replace(/\/+$/, '');
   const BACKEND_PREDICT_URL = `${BACKEND_URL}/predict`;
 
