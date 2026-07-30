@@ -36,7 +36,9 @@ export const App: React.FC = () => {
   const [predictionCount, setPredictionCount] = useState<number>(0);
   const [themeMode, setThemeMode] = useState<ThemeMode>('cyber');
 
-  const API_URL = "https://ai-deployement-capstone.onrender.com";
+  const BACKEND_BASE_URL = import.meta.env.VITE_BACKEND_URL ?? 'http://127.0.0.1:8000';
+  const BACKEND_URL = BACKEND_BASE_URL.replace(/\/+$/, '');
+  const BACKEND_PREDICT_URL = `${BACKEND_URL}/predict`;
 
   // Toggle Theme Class on Root & Body Elements
   useEffect(() => {
@@ -56,8 +58,8 @@ export const App: React.FC = () => {
   const checkBackendHealth = async () => {
     setIsCheckingConn(true);
     try {
-      await axios.options('http://127.0.0.1:8000/predict', { timeout: 3000 }).catch(() => {
-        return axios.get('http://127.0.0.1:8000/', { timeout: 2500 });
+      await axios.options(BACKEND_PREDICT_URL, { timeout: 3000 }).catch(() => {
+        return axios.get(BACKEND_URL, { timeout: 2500 });
       });
       setIsBackendOnline(true);
       setHasConnectionError(false);
@@ -99,7 +101,7 @@ export const App: React.FC = () => {
     }
 
     try {
-      const response = await axios.post<PredictionResponse>(API_URL, formData, {
+      const response = await axios.post<PredictionResponse>(BACKEND_PREDICT_URL, formData, {
         headers: { 'Content-Type': 'application/json' },
         timeout: 8000,
       });
