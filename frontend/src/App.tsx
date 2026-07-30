@@ -57,14 +57,19 @@ export const App: React.FC = () => {
   // Check Backend Connectivity on mount
   const checkBackendHealth = async () => {
     setIsCheckingConn(true);
+
     try {
-      await axios.options(BACKEND_PREDICT_URL, { timeout: 3000 }).catch(() => {
-        return axios.get(BACKEND_URL, { timeout: 2500 });
-      });
+      await axios.get(`${BACKEND_URL}/health`, { timeout: 3000 });
       setIsBackendOnline(true);
       setHasConnectionError(false);
     } catch (err) {
-      setIsBackendOnline(false);
+      try {
+        await axios.get(BACKEND_URL, { timeout: 2500 });
+        setIsBackendOnline(true);
+        setHasConnectionError(false);
+      } catch (innerErr) {
+        setIsBackendOnline(false);
+      }
     } finally {
       setIsCheckingConn(false);
     }
