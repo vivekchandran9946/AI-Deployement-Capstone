@@ -36,7 +36,7 @@ export const App: React.FC = () => {
   const [predictionCount, setPredictionCount] = useState<number>(0);
   const [themeMode, setThemeMode] = useState<ThemeMode>('cyber');
 
-  const BACKEND_URL = 'http://127.0.0.1:8000/predict';
+  const API_URL = "https://ai-deployement-capstone.onrender.com";
 
   // Toggle Theme Class on Root & Body Elements
   useEffect(() => {
