@@ -55,17 +55,18 @@ export const CustomerForm: React.FC<CustomerFormProps> = ({
       updated.StreamingTV = 'No internet service';
       updated.StreamingMovies = 'No internet service';
     } else if (field === 'InternetService' && value !== 'No') {
-      const internetFields: (keyof CustomerFormData)[] = [
+      const internetFields = [
         'OnlineSecurity',
         'OnlineBackup',
         'DeviceProtection',
         'TechSupport',
         'StreamingTV',
         'StreamingMovies',
-      ];
-      internetFields.forEach((f) => {
+      ] as const;
+      type InternetFieldKey = (typeof internetFields)[number];
+      internetFields.forEach((f: InternetFieldKey) => {
         if (updated[f] === 'No internet service') {
-          updated[f] = 'No' as any;
+          updated[f] = 'No';
         }
       });
     }
