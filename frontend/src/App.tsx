@@ -99,7 +99,7 @@ export const App: React.FC = () => {
     }
 
     try {
-      const response = await axios.post<PredictionResponse>(BACKEND_URL, formData, {
+      const response = await axios.post<PredictionResponse>(API_URL, formData, {
         headers: { 'Content-Type': 'application/json' },
         timeout: 8000,
       });
