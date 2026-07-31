@@ -33,7 +33,7 @@ export const App: React.FC = () => {
   const [isCheckingConn, setIsCheckingConn] = useState<boolean>(false);
   const [predictionCount, setPredictionCount] = useState<number>(0);
 
-  const BACKEND_URL = '';
+  const BACKEND_URL = 'https://ai-deployement-capstone.onrender.com';
 
   // Force Professional White Theme on Root & Body Elements
   useEffect(() => {
@@ -48,9 +48,7 @@ export const App: React.FC = () => {
   const checkBackendHealth = async () => {
     setIsCheckingConn(true);
     try {
-      await axios.options('/predict', { timeout: 3000 }).catch(() => {
-        return axios.get('/', { timeout: 2500 });
-      });
+      await axios.get(`${BACKEND_URL}/health`, { timeout: 2500 });
       setIsBackendOnline(true);
       setHasConnectionError(false);
     } catch (err) {
@@ -91,10 +89,12 @@ export const App: React.FC = () => {
     }
 
     try {
-      const response = await axios.post<PredictionResponse>(BACKEND_URL, formData, {
-        headers: { 'Content-Type': 'application/json' },
-        timeout: 8000,
-      });
+      const response = await axios.post<PredictionResponse>(`${BACKEND_URL}/predict`,formData,
+  {
+    headers: { 'Content-Type': 'application/json' },
+    timeout: 8000,
+  }
+);
 
       const elapsed = Date.now() - startMs;
       const delay = Math.max(0, 800 - elapsed);
