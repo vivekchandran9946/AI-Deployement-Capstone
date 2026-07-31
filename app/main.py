@@ -5,6 +5,8 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 from app.schemas import CustomerData
 from app.predictor import predict_churn
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
 
 app = FastAPI(
     title="Customer Churn Prediction API",
@@ -42,3 +44,8 @@ def health():
 def predict(customer: CustomerData):
     result = predict_churn(customer.model_dump())
     return result
+app.mount("/assets", StaticFiles(directory="app/static/assets"), name="assets")
+
+@app.get("/")
+def frontend():
+    return FileResponse("app/static/index.html")

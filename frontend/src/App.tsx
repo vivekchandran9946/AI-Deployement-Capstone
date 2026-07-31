@@ -33,7 +33,7 @@ export const App: React.FC = () => {
   const [isCheckingConn, setIsCheckingConn] = useState<boolean>(false);
   const [predictionCount, setPredictionCount] = useState<number>(0);
 
-  const BACKEND_URL = 'http://127.0.0.1:8000/predict';
+  const BACKEND_URL = '';
 
   // Force Professional White Theme on Root & Body Elements
   useEffect(() => {
@@ -48,8 +48,8 @@ export const App: React.FC = () => {
   const checkBackendHealth = async () => {
     setIsCheckingConn(true);
     try {
-      await axios.options('http://127.0.0.1:8000/predict', { timeout: 3000 }).catch(() => {
-        return axios.get('http://127.0.0.1:8000/', { timeout: 2500 });
+      await axios.options('/predict', { timeout: 3000 }).catch(() => {
+        return axios.get('/', { timeout: 2500 });
       });
       setIsBackendOnline(true);
       setHasConnectionError(false);
