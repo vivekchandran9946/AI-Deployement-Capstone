@@ -3,121 +3,77 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* ==========================================================================
-   THEME 1: CYBER GREEN & CYAN (Default Dark Cyber Engine)
+   PROFESSIONAL WHITE THEME (Default & Exclusive)
    ========================================================================== */
-html.theme-cyber,
-body.theme-cyber {
-  background-color: #06090e !important;
-  color: #f8fafc !important;
+html,
+body,
+html.theme-light,
+body.theme-light {
+  background-color: #f8fafc !important;
+  color: #0f172a !important;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   background-image:
-    radial-gradient(circle at 50% 0%, rgba(16, 185, 129, 0.16) 0%, transparent 55%),
-    radial-gradient(circle at 85% 25%, rgba(0, 229, 255, 0.12) 0%, transparent 45%),
-    linear-gradient(to bottom, rgba(6, 9, 14, 0.95), rgba(6, 9, 14, 1));
+    radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.06) 0%, transparent 55%),
+    radial-gradient(circle at 85% 25%, rgba(14, 165, 233, 0.05) 0%, transparent 45%),
+    linear-gradient(to bottom, #f8fafc, #f1f5f9);
   background-attachment: fixed;
   min-height: 100vh;
   width: 100%;
 }
 
-.theme-cyber select,
-.theme-cyber input,
-.theme-cyber textarea {
-  color-scheme: dark;
-}
-
-/* ==========================================================================
-   THEME 2: DARK BLUE & BLACK (Deep Navy & Neon Blue)
-   ========================================================================== */
-html.theme-dark-blue,
-body.theme-dark-blue {
-  background-color: #050a15 !important;
-  color: #f8fafc !important;
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  background-image:
-    radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.22) 0%, transparent 60%),
-    radial-gradient(circle at 85% 25%, rgba(6, 182, 212, 0.15) 0%, transparent 45%),
-    linear-gradient(to bottom, rgba(5, 10, 21, 0.95), rgba(5, 10, 21, 1));
-  background-attachment: fixed;
-  min-height: 100vh;
-  width: 100%;
-}
-
-.theme-dark-blue select,
-.theme-dark-blue input,
-.theme-dark-blue textarea {
-  color-scheme: dark;
+select,
+input,
+textarea {
+  color-scheme: light;
 }
 
 /* Custom Background Grid Pattern */
 .bg-grid-pattern {
   background-size: 36px 36px;
   background-image:
-    linear-gradient(to right, rgba(255, 255, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    linear-gradient(to right, rgba(15, 23, 42, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(15, 23, 42, 0.03) 1px, transparent 1px);
 }
 
-/* Glow Utilities */
+/* Light Mode Glow Utilities */
 .glow-green {
-  box-shadow: 0 0 30px -4px rgba(16, 185, 129, 0.5);
+  box-shadow: 0 4px 20px -2px rgba(16, 185, 129, 0.25);
 }
 
 .glow-blue {
-  box-shadow: 0 0 30px -4px rgba(59, 130, 246, 0.55);
+  box-shadow: 0 4px 20px -2px rgba(37, 99, 235, 0.25);
 }
 
 .glow-cyan {
-  box-shadow: 0 0 30px -4px rgba(0, 229, 255, 0.45);
+  box-shadow: 0 4px 20px -2px rgba(14, 165, 233, 0.25);
 }
 
 .text-glow-green {
-  text-shadow: 0 0 16px rgba(16, 185, 129, 0.85);
+  text-shadow: 0 0 10px rgba(16, 185, 129, 0.3);
 }
 
 .text-glow-blue {
-  text-shadow: 0 0 16px rgba(59, 130, 246, 0.85);
+  text-shadow: 0 0 10px rgba(37, 99, 235, 0.3);
 }
 
 .text-glow-cyan {
-  text-shadow: 0 0 16px rgba(0, 229, 255, 0.85);
+  text-shadow: 0 0 10px rgba(14, 165, 233, 0.3);
 }
 
-.text-glow-white {
-  text-shadow: 0 0 12px rgba(255, 255, 255, 0.6);
-}
-
-/* Theme Adaptive Glass / Surface Card Style */
+/* Professional Card Surface Style */
 .app-card {
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-/* Cyber Theme Cards */
-.theme-cyber .app-card {
-  background: rgba(11, 17, 26, 0.85) !important;
+  background: #ffffff !important;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.1) !important;
-  box-shadow: 0 12px 40px -10px rgba(0, 0, 0, 0.9);
-  color: #f8fafc !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.05), 0 2px 6px -1px rgba(15, 23, 42, 0.03);
+  color: #0f172a !important;
 }
 
-.theme-cyber .app-card:hover {
-  border-color: rgba(16, 185, 129, 0.5) !important;
-  box-shadow: 0 14px 45px -6px rgba(16, 185, 129, 0.22);
-}
-
-/* Dark Blue Theme Cards */
-.theme-dark-blue .app-card {
-  background: rgba(10, 18, 36, 0.88) !important;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(59, 130, 246, 0.2) !important;
-  box-shadow: 0 12px 40px -10px rgba(0, 0, 0, 0.9);
-  color: #f8fafc !important;
-}
-
-.theme-dark-blue .app-card:hover {
-  border-color: rgba(59, 130, 246, 0.6) !important;
-  box-shadow: 0 14px 45px -6px rgba(59, 130, 246, 0.3);
+.app-card:hover {
+  border-color: #3b82f6 !important;
+  box-shadow: 0 12px 30px -4px rgba(59, 130, 246, 0.12);
 }
 
 @keyframes spin-slow {
