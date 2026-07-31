@@ -33,7 +33,7 @@ export const App: React.FC = () => {
   const [isCheckingConn, setIsCheckingConn] = useState<boolean>(false);
   const [predictionCount, setPredictionCount] = useState<number>(0);
 
-  const BACKEND_URL = 'https://ai-deployement-capstone.onrender.com';
+  const BACKEND_URL = '/predict';
 
   // Force Professional White Theme on Root & Body Elements
   useEffect(() => {
