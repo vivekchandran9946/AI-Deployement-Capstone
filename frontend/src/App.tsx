@@ -82,7 +82,7 @@ export const App: React.FC = () => {
         const mockResult = runMockInference(formData);
         setPredictionResult(mockResult);
         setIsLoading(false);
-        setPredictionCount((prev) => prev + 1);
+        setPredictionCount((prev: number) => prev + 1);
         scrollToResults();
       }, 900);
       return;
@@ -260,7 +260,7 @@ export const App: React.FC = () => {
                     setHasConnectionError(false);
                     const mockResult = runMockInference(formData);
                     setPredictionResult(mockResult);
-                    setPredictionCount((prev) => prev + 1);
+                    setPredictionCount((prev: number) => prev + 1);
                     scrollToResults();
                   }}
                   isRetrying={isCheckingConn}
